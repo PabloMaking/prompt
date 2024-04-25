@@ -34,7 +34,7 @@ persona = "Eres un especialista en interpretar y explicar tablas."
 context = " Dada una tabla sobre un inventario de un proyecto de GCP"
 response_format = "Respondeme en formato markdown"
 objetivo = "Resumeme el contenido poniendo de título el que aparece escrito en markdown. En español"
-prompt = persona + objetivo + tablas + response_format
+prompt = persona + context + objetivo + tablas + response_format
 print(get_chat_response(chat, prompt))
 # Load the model
 # multimodal_model = GenerativeModel(model_name="gemini-1.5-pro")
