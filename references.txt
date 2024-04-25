@@ -1,0 +1,2 @@
+Base teórica de Google
+https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/prompt-design-strategies
