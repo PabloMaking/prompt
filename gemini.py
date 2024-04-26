@@ -1,12 +1,27 @@
 # TODO(developer): Vertex AI SDK - uncomment below & run
 # pip3 install --upgrade --user google-cloud-aiplatform
 # gcloud auth application-default login
+
+'''
+Objetivo
+Instrucciones
+
+Persona
+Constraints
+Tone
+Context
+Shot-Exmaples
+Response format
+
+'''
+
+
 import vertexai
 from vertexai.generative_models import GenerativeModel, Part
 from vertexai.generative_models import GenerativeModel, ChatSession
 from vertexai import generative_models
-import pandas as pd
-
+import os
+import glob
 # Initialize Vertex AI
 vertexai.init(project="aie-sandbox--pct--ac", location="europe-west1")
 model = GenerativeModel(model_name="gemini-1.5-pro-preview-0409")
@@ -19,6 +34,12 @@ def get_chat_response(chat: ChatSession, prompt: str) -> str:
         text_response.append(chunk.text)
     return "".join(text_response)
 
+def load_md():
+    os.chdir("./md")
+    md_s = glob.glob("*.md")
+    return md_s
+
+
 def leer_archivo_md(nombre_archivo):
     try:
         with open(nombre_archivo, "r", encoding="utf-8") as archivo:
@@ -28,14 +49,22 @@ def leer_archivo_md(nombre_archivo):
         print(f"El archivo '{nombre_archivo}' no se encontró.")
         return None
 
-tablas = leer_archivo_md("compute.googleapis.com.md")
-#print(tablas)
-persona = "Eres un especialista en interpretar y explicar tablas."
-context = " Dada una tabla sobre un inventario de un proyecto de GCP"
-response_format = "Respondeme en formato markdown"
-objetivo = "Resumeme el contenido poniendo de título el que aparece escrito en markdown. En español"
-prompt = persona + context + objetivo + tablas + response_format
+tablas = leer_archivo_md("md/compute.googleapis.com.md")
+files = load_md()
+persona = "Hola eres un paciente e inteligente especialista de google en interpretar y explicar tablas sobre recursos de Google-Cloud en español."
+context = " voy a proporcionarte unas tablas sobre los assets de un proyecto de GCP. Cada asset family con sus hijos"
+objetivo = "Explicame las columnas, analiza su contenido y proporcioname tu analisis, tus observaciones y consideraciones"
+response_format = "Respondeme en formato markdown, sin ninguna introducción y únicamente cuando te proporcione tablas"
+shot_exmaple = "Ejemplo:   Columnas:...  Observaciones:... Análisis y consideraciones: ..."
+
+prompt = persona + context + objetivo + response_format + shot_exmaple
 print(get_chat_response(chat, prompt))
+print(get_chat_response(chat, tablas))
+'''for file in files:
+    tablas = leer_archivo_md(file)
+    prompt = persona + context + objetivo + tablas + response_format'''
+
+#print(get_chat_response(chat, prompt))
 # Load the model
 # multimodal_model = GenerativeModel(model_name="gemini-1.5-pro")
 # generation_config = generative_models.GenerationConfig(
